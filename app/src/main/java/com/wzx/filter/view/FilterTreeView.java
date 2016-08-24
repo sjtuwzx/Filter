@@ -67,8 +67,6 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
 
     private void initInfoPanel() {
         mProgressBar = new ProgressBar(getContext());
-        mProgressBar.setIndeterminateDrawable(getContext().getResources()
-                .getDrawable(R.drawable.ico_loading_l));
         mProgressBar.setVisibility(View.GONE);
 
         addView(mProgressBar);
