@@ -79,17 +79,17 @@ public class FilterListAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
-    
+
     @Override
     public int getCount() {
-    	// TODO Auto-generated method stub
-    	return mChildren.size();
+        // TODO Auto-generated method stub
+        return mChildren.size();
     }
-    
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-    	// TODO Auto-generated method stub
-    	ViewHolder viewHolder;
+        // TODO Auto-generated method stub
+        ViewHolder viewHolder;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.view_tree_item, parent, false);
             viewHolder = new ViewHolder(convertView);
@@ -104,16 +104,16 @@ public class FilterListAdapter extends BaseAdapter {
                 - parent.getPaddingLeft() - parent.getPaddingRight()
                 - ViewUtils.dip2px(mContext, 24);
 
-        viewHolder.displayNameText.setText(label);
-        viewHolder.displayNameText.setMaxWidth(maxLen);
+        viewHolder.mDisplayNameText.setText(label);
+        viewHolder.mDisplayNameText.setMaxWidth(maxLen);
 
         if (!mIndicateSelectState) {
-            viewHolder.selectIndicator.setVisibility(View.GONE);
-            viewHolder.checkbox.setVisibility(View.GONE);
+            viewHolder.mSelectIndicator.setVisibility(View.GONE);
+            viewHolder.mCheckbox.setVisibility(View.GONE);
         }
 
         int textColor = R.color.filter_item_text_color;
-        LinearLayout container = (LinearLayout) viewHolder.displayNameText.getParent();
+        LinearLayout container = (LinearLayout) viewHolder.mDisplayNameText.getParent();
         RelativeLayout.LayoutParams param = (RelativeLayout.LayoutParams) container
                 .getLayoutParams();
         boolean selected = mIndicateSelectState && node.isSelected();
@@ -124,41 +124,41 @@ public class FilterListAdapter extends BaseAdapter {
 
         if (!node.isLeaf()) {
             if (mIndicateSelectState) {
-                viewHolder.selectIndicator.setVisibility(View.VISIBLE);
-                viewHolder.selectIndicator.setSelected(selected);
+                viewHolder.mSelectIndicator.setVisibility(View.VISIBLE);
+                viewHolder.mSelectIndicator.setSelected(selected);
             }
 
             param.addRule(RelativeLayout.ALIGN_PARENT_LEFT, 0);
-            viewHolder.displayNameText.setGravity(Gravity.CENTER);
+            viewHolder.mDisplayNameText.setGravity(Gravity.CENTER);
             container.setGravity(Gravity.CENTER);
-            viewHolder.displayNameText.setPadding(0, 0, 0, 0);
+            viewHolder.mDisplayNameText.setPadding(0, 0, 0, 0);
             if (mFilterGroup instanceof FilterRoot) {
                 textColor = R.color.filter_root_text_color;
             }
-            viewHolder.displayNameText.setTextColor(mContext.getResources().getColorStateList(
+            viewHolder.mDisplayNameText.setTextColor(mContext.getResources().getColorStateList(
                     textColor));
-            viewHolder.displayNameText.setSelected(isActive);
+            viewHolder.mDisplayNameText.setSelected(isActive);
 
-            viewHolder.checkbox.setVisibility(View.GONE);
+            viewHolder.mCheckbox.setVisibility(View.GONE);
         } else {
-            viewHolder.selectIndicator.setVisibility(View.GONE);
+            viewHolder.mSelectIndicator.setVisibility(View.GONE);
 
             param.addRule(RelativeLayout.ALIGN_PARENT_LEFT,
                     RelativeLayout.TRUE);
-            viewHolder.displayNameText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+            viewHolder.mDisplayNameText.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
             container.setGravity(Gravity.LEFT);
-            viewHolder.displayNameText.setPadding(ViewUtils.dip2px(mContext, 11), 0, 0, 0);
-            viewHolder.displayNameText.setSelected(selected);
+            viewHolder.mDisplayNameText.setPadding(ViewUtils.dip2px(mContext, 11), 0, 0, 0);
+            viewHolder.mDisplayNameText.setSelected(selected);
 
             if (mIndicateSelectState) {
-                viewHolder.checkbox.setVisibility(View.VISIBLE);
+                viewHolder.mCheckbox.setVisibility(View.VISIBLE);
                 int checkboxRes = R.drawable.checkbox_selector_new;
                 if ((mFilterGroup != null && mFilterGroup.isSingleChoice()) || node instanceof UnlimitedFilterNode
                         || node instanceof AllFilterNode) {
                     checkboxRes = R.drawable.filter_radio_button;
                 }
-                viewHolder.checkbox.setImageResource(checkboxRes);
-                viewHolder.checkbox.setSelected(selected);
+                viewHolder.mCheckbox.setImageResource(checkboxRes);
+                viewHolder.mCheckbox.setSelected(selected);
             }
         }
         if (isActive && !node.isLeaf()) {
@@ -167,7 +167,7 @@ public class FilterListAdapter extends BaseAdapter {
             convertView.setBackgroundColor(Color.TRANSPARENT);
         }
 
-        int height = mTreeViewConfig.itemMinHeight;
+        int height = mTreeViewConfig.mItemMinHeight;
         if (height > 0) {
             convertView.setMinimumHeight(height);
         }
@@ -176,14 +176,14 @@ public class FilterListAdapter extends BaseAdapter {
 
 
     private static class ViewHolder {
-        TextView displayNameText;
-        ImageView selectIndicator;
-        ImageView checkbox;
+        TextView mDisplayNameText;
+        ImageView mSelectIndicator;
+        ImageView mCheckbox;
 
         public ViewHolder(View v) {
-            displayNameText = (TextView) v.findViewById(R.id.text_name);
-            selectIndicator = (ImageView) v.findViewById(R.id.icon_selected);
-            checkbox = (ImageView) v.findViewById(R.id.checkbox);
+            mDisplayNameText = (TextView) v.findViewById(R.id.text_name);
+            mSelectIndicator = (ImageView) v.findViewById(R.id.icon_selected);
+            mCheckbox = (ImageView) v.findViewById(R.id.checkbox);
         }
     }
 

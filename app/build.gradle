@@ -1,4 +1,8 @@
+import com.android.build.gradle.AppExtension
+import com.android.build.gradle.AppPlugin
+
 apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
 
 android {
     compileSdkVersion 23
@@ -14,6 +18,48 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+afterEvaluate {
+    task checkstyle(type: Checkstyle) {
+        configFile file("checkstyle.xml")
+        source 'src'
+        include '**/*.java'
+        exclude '**/gen/**'
+
+        classpath = files()
+    }
+    task checkstyleReport << {
+        if (file("$buildDir/reports/checkstyle/checkstyle.xml").exists()) {
+            ant.xslt(in: "$buildDir/reports/checkstyle/checkstyle.xml",
+                    style: "checkstyle-noframes-sorted.xsl",
+                    out: "$buildDir/reports/checkstyle/checkstyle.html"
+            )
+        }
+    }
+    gradle.taskGraph.afterTask { Task task, TaskState state ->
+        if (state.failure) {
+            if (task.name in ['checkstyle']) {
+                checkstyleReport.execute()
+            }
+        }
+    }
+
+    //需要检查的时候在主工程运行 ./gradlew :android-nova-hotel:checkstyle --stacktrace
+    //下面的代码是在bundleRelease的时候运行checkstyle
+    ((AppExtension)((AppPlugin) project.getPlugins().getPlugin(AppPlugin)).extension).
+            applicationVariants.all {
+        def preBuildTask = project.tasks.findByName("preBuild")
+        def checkstyleTask = project.tasks.findByName("checkstyle")
+        preBuildTask.doFirst {
+            def start = System.currentTimeMillis();
+            try {
+                checkstyleTask.execute()
+            } finally {
+                println "[checkstyle] cost ${System.currentTimeMillis() - start} ms"
+            }
         }
     }
 }

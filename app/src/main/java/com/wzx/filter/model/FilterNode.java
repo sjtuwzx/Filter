@@ -26,9 +26,6 @@ public class FilterNode {
 
     private Object mTag;
 
-    //6.13 标签对应的Tip
-    private String mTagTip = "";
-
     /**
      * 设置展示名称
      * @param displayName 展示名称
@@ -100,10 +97,6 @@ public class FilterNode {
     public final void setParent(FilterParent parent) {
         mParent = parent;
     }
-
-    public void setTagTip(String tagTip) { mTagTip = tagTip;}
-
-    public String getTagTip() { return mTagTip;}
 
     /**
      * 获取节点的parent

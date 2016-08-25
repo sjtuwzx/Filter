@@ -74,8 +74,8 @@ public class FilterGroup extends FilterNode implements FilterParent {
      */
     public synchronized List<FilterNode> getChildren(boolean containUnlimited) {
         List<FilterNode> children = new ArrayList<FilterNode>(mChildren);
-        int N = children.size();
-        for (int i = N - 1; i >= 0; i--) {
+        int childrenCount = children.size();
+        for (int i = childrenCount - 1; i >= 0; i--) {
             FilterNode child = children.get(i);
             if (child instanceof InvisibleFilterNode || (!containUnlimited && child instanceof UnlimitedFilterNode)) {
                 children.remove(i);
@@ -131,8 +131,8 @@ public class FilterGroup extends FilterNode implements FilterParent {
     }
 
     public synchronized void removeUnselectedInvisibleNode() {
-        int N = mChildren.size();
-        for (int i = N - 1; i >= 0; i--) {
+        int childrenCount = mChildren.size();
+        for (int i = childrenCount - 1; i >= 0; i--) {
             FilterNode child = mChildren.get(i);
             if (child instanceof FilterGroup) {
                 FilterGroup group = (FilterGroup) child;
@@ -173,8 +173,8 @@ public class FilterGroup extends FilterNode implements FilterParent {
     private synchronized List<FilterNode> getTriggerFirstChildren(FilterNode trigger) {
         if (contain(trigger, true)) {
             List<FilterNode> children = new ArrayList<FilterNode>(mChildren);
-            int N = children.size();
-            for (int i = 0; i < N; i++) {
+            int childrenCount = children.size();
+            for (int i = 0; i < childrenCount; i++) {
                 FilterNode child = children.get(i);
                 if (child.contain(trigger, true)) {
                     children.remove(child);
@@ -360,8 +360,8 @@ public class FilterGroup extends FilterNode implements FilterParent {
      */
     public synchronized int getFirstSelectChildPosition(boolean containUnlimited) {
         List<FilterNode> children = getChildren(containUnlimited);
-        int N = children.size();
-        for (int i = 0; i < N; i++) {
+        int childrenCount = children.size();
+        for (int i = 0; i < childrenCount; i++) {
             FilterNode child = children.get(i);
             if (child.isSelected()) {
                 return i;

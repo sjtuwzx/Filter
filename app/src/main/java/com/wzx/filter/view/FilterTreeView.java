@@ -113,7 +113,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
         mFilterGroup = group;
         mTreeViewConfig = mFilterGroup.getTag();
 
-        int dividerColor = mTreeViewConfig.dividerColor;
+        int dividerColor = mTreeViewConfig.mDividerColor;
         if (dividerColor == -1) {
             mListView.setDivider(null);
             mListView.setDividerHeight(0);
@@ -122,7 +122,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
             mListView.setDivider(divider);
             mListView.setDividerHeight(ViewUtils.dip2px(getContext(), 0.5f));
         }
-        int padding = mTreeViewConfig.padding;
+        int padding = mTreeViewConfig.mPadding;
         mListView.setPadding(padding, 0, padding, 0);
         mListView.setVisibility(VISIBLE);
 
@@ -148,7 +148,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
         if (position >= mFilterListAdapter.getCount()) {
             return false;
         }
-        FilterNode child = (FilterNode)mFilterListAdapter.getItem(position);
+        FilterNode child = (FilterNode) mFilterListAdapter.getItem(position);
         TreeViewConfig config = mFilterGroup.getTag();
         if (child instanceof FilterGroup && config != null) {
             mFilterListAdapter.setActivePosition(position);
@@ -185,7 +185,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
         int height = getMeasuredHeight();
         int navWidth = width;
         if (mTreeViewConfig != null) {
-            navWidth = (int) (width * mTreeViewConfig.widthWeight);
+            navWidth = (int) (width * mTreeViewConfig.mWidthWeight);
         }
 
         int childWidth = width - navWidth;
@@ -217,7 +217,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
         int height = b - t;
         int navWidth = width;
         if (mTreeViewConfig != null) {
-            navWidth = (int) (width * mTreeViewConfig.widthWeight);
+            navWidth = (int) (width * mTreeViewConfig.mWidthWeight);
         }
 
         if (mListView != null) {
@@ -256,10 +256,10 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
         TreeViewConfig config = mFilterGroup.getTag();
         if (child == null) {
             canvas.drawLine(width, 0, width, height, mPaint);
-        } else if (config != null && config.isRoot) {
+        } else if (config != null && config.mIsRoot) {
             canvas.drawLine(width, 0, width, child.getTop(), mPaint);
             canvas.drawLine(width, child.getBottom(), width, height, mPaint);
-        } else if (config != null){
+        } else if (config != null) {
             int childHeight = child.getBottom() - child.getTop();
             int shapeHeight = ViewUtils.dip2px(getContext(), 10);
             int shapeWidth = ViewUtils.dip2px(getContext(), 7);
@@ -279,7 +279,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
     public void onItemClick(AdapterView<?> parent, View view, int position,
                             long id) {
         // TODO Auto-generated method stub
-        FilterNode node = (FilterNode)mFilterListAdapter.getItem(position);
+        FilterNode node = (FilterNode) mFilterListAdapter.getItem(position);
 
         if (node.isLeaf()) {
             if (mOnItemClickListener != null) {
@@ -293,11 +293,11 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
     }
 
     public static class TreeViewConfig {
-        public boolean isRoot = false;
-        public int dividerColor = -1;
-        public float widthWeight = 1.0f;
-        public int itemMinHeight = 0;
-        public int padding = 0;
+        public boolean mIsRoot = false;
+        public int mDividerColor = -1;
+        public float mWidthWeight = 1.0f;
+        public int mItemMinHeight = 0;
+        public int mPadding = 0;
     }
 
     private LazyLoader mLazyLoader;
@@ -332,7 +332,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
 
     public interface LazyLoader {
         void lazyLoad(FilterTreeView treeView, FilterGroup group,
-                             int position, SubTreeLoaderListener listener);
+                      int position, SubTreeLoaderListener listener);
     }
 
     public interface SubTreeLoaderListener {
@@ -350,7 +350,7 @@ public class FilterTreeView extends ViewGroup implements OnItemClickListener {
         }
     }
 
-    public static interface OnItemClickListener {
+    public interface OnItemClickListener {
         void onLeafItemClick(FilterTreeView treeView, View view,
                              FilterGroup parent, FilterNode node, int position);
 

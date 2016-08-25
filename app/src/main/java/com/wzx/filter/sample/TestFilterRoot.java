@@ -10,15 +10,14 @@ import com.wzx.filter.model.UnlimitedFilterNode;
  */
 public class TestFilterRoot extends FilterRoot {
 
-    private static String[] sDescriptors = {"含不限", "关联tab1", "单选", "单选|不限", "互斥tab6",  "互斥tab5", "三级|单", "三级|复",
+    private static String[] sDescriptors = {"含不限", "关联tab1", "单选", "单选|不限", "互斥tab6", "互斥tab5", "三级|单", "三级|复",
             "三级|单独选中|单"};
 
     public TestFilterRoot() {
         setDisplayName("TestFilterRoot");
-        //setSingleChoice();
         for (int i = 0; i < 9; i++) {
             FilterGroup group = new FilterGroup();
-            group.setDisplayName(String.format("%d(%s)", i+1, sDescriptors[i]));
+            group.setDisplayName(String.format("%d(%s)", i + 1, sDescriptors[i]));
             group.setCharacterCode(String.format("%d", i));
             if (i == 2 || i == 3) {
                 group.setSingleChoice();
@@ -45,15 +44,15 @@ public class TestFilterRoot extends FilterRoot {
                 if (i == 6 || i == 7 || i == 8) {
                     UnlimitedFilterNode unlimitedNode = new UnlimitedFilterNode();
                     unlimitedNode.setDisplayName("不限");
-                    ((FilterGroup)node).addNode(unlimitedNode);
-                    for(int k = 0; k < 10; k++) {
+                    ((FilterGroup) node).addNode(unlimitedNode);
+                    for (int k = 0; k < 10; k++) {
                         FilterNode node1 = new FilterNode();
                         node1.setDisplayName(String.format("%d-%d-%d", i + 1, j + 1, k + 1));
                         node1.setCharacterCode(String.format("%d-%d-%d", i, j + 1, k + 1));
-                        ((FilterGroup)node).addNode(node1);
+                        ((FilterGroup) node).addNode(node1);
                     }
                     if (i == 8) {
-                        ((FilterGroup)node).setSingleChoice();
+                        ((FilterGroup) node).setSingleChoice();
                        /* InvisibleFilterNode invisibleNode = new InvisibleFilterNode();
                         invisibleNode.setDisplayName(String.format("%d-%d", i + 1, j + 1));
                         ((FilterGroup)node).addNode(invisibleNode);*/

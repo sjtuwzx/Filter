@@ -45,8 +45,8 @@ public class VirtualFilterRoot extends FilterRoot {
 
     protected List<FilterNode> getChildren(boolean needUnlimited, boolean needEmptyGroup) {
         List<FilterNode> children = new ArrayList<FilterNode>(super.getChildren(needUnlimited));
-        int N = children.size();
-        for (int i = N - 1; i >= 0; i--) {
+        int childrenCount = children.size();
+        for (int i = childrenCount - 1; i >= 0; i--) {
             FilterNode child = children.get(i);
             if (child instanceof FilterGroup) {
                 FilterGroup group = (FilterGroup)child;
