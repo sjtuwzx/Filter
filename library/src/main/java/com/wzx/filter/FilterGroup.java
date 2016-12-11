@@ -1,6 +1,5 @@
 package com.wzx.filter;
 
-
 import android.text.TextUtils;
 
 import java.util.ArrayList;
