@@ -329,21 +329,6 @@ public class FilterGroup extends FilterNode implements FilterParent {
     }
 
     /**
-     * 获取所有选中子节点,包括不限节点
-     *
-     * @return 所有选中子节点列表,包括不限节点
-     */
-    public synchronized List<FilterNode> getSelectedChildrenIncludeUnlimitedNode() {
-        List<FilterNode> selectedChildrenList = new ArrayList<FilterNode>();
-        for (FilterNode child : mChildren) {
-            if (child.isSelected()) {
-                selectedChildrenList.add(child);
-            }
-        }
-        return selectedChildrenList;
-    }
-
-    /**
      * 获取选中子节点个数
      *
      * @return 选中子节点个数
