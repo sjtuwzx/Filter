@@ -1,22 +1,21 @@
-package com.wzx.filter.sample;
+package com.wzx.filter;
 
 import java.util.List;
 
-import com.wzx.filter.R;
-import com.wzx.filter.model.AllFilterNode;
-import com.wzx.filter.model.FilterGroup;
-import com.wzx.filter.model.FilterNode;
-import com.wzx.filter.model.FilterRoot;
-import com.wzx.filter.model.UnlimitedFilterNode;
+import com.wzx.filter.library.AllFilterNode;
+import com.wzx.filter.library.FilterGroup;
+import com.wzx.filter.library.FilterNode;
+import com.wzx.filter.library.FilterRoot;
+import com.wzx.filter.library.UnlimitedFilterNode;
 import com.wzx.filter.tools.ViewUtils;
 import com.wzx.filter.view.FilterTreeView;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-public class FilterTreeActivity extends Activity implements FilterTreeView.OnItemClickListener {
+public class FilterTreeActivity extends AppCompatActivity implements FilterTreeView.OnItemClickListener {
 
     private FilterTreeView mFilterTreeView;
 

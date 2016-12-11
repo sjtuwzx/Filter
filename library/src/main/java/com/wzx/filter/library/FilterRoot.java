@@ -1,4 +1,4 @@
-package com.wzx.filter.model;
+package com.wzx.filter.library;
 
 import android.text.TextUtils;
 

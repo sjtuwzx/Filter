@@ -1,9 +1,9 @@
-package com.wzx.filter.sample;
+package com.wzx.filter;
 
-import com.wzx.filter.model.FilterGroup;
-import com.wzx.filter.model.FilterNode;
-import com.wzx.filter.model.FilterRoot;
-import com.wzx.filter.model.UnlimitedFilterNode;
+import com.wzx.filter.library.FilterGroup;
+import com.wzx.filter.library.FilterNode;
+import com.wzx.filter.library.FilterRoot;
+import com.wzx.filter.library.UnlimitedFilterNode;
 
 /**
  * Created by wang_zx on 2015/1/7.

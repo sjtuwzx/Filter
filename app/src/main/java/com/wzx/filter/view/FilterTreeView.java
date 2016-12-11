@@ -1,8 +1,8 @@
 package com.wzx.filter.view;
 
 import com.wzx.filter.R;
-import com.wzx.filter.model.FilterGroup;
-import com.wzx.filter.model.FilterNode;
+import com.wzx.filter.library.FilterGroup;
+import com.wzx.filter.library.FilterNode;
 import com.wzx.filter.tools.ViewUtils;
 
 import android.content.Context;

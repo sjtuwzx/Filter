@@ -1,7 +1,7 @@
-package com.wzx.filter.sample;
+package com.wzx.filter;
 
-import com.wzx.filter.model.FilterGroup;
-import com.wzx.filter.model.FilterNode;
+import com.wzx.filter.library.FilterGroup;
+import com.wzx.filter.library.FilterNode;
 
 public class LazyOpenFilterGroup extends FilterGroup {
 

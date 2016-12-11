@@ -1,4 +1,4 @@
-package com.wzx.filter.model;
+package com.wzx.filter.library;
 
 /**
  * Created by wang_zx on 2015/1/12.
