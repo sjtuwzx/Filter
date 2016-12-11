@@ -49,23 +49,6 @@ public class FilterGroup extends FilterNode implements FilterParent {
     }
 
     /**
-     * 删除所有节点
-     *
-     */
-    public synchronized void removeAllChild() {
-        if (mChildren == null || mChildren.size() <= 0) {
-            return;
-        }
-
-        for (int i = mChildren.size() - 1; i >= 0; i--) {
-            FilterNode node = mChildren.get(i);
-            if (mChildren.remove(node)) {
-                node.setParent(null);
-            }
-        }
-    }
-
-    /**
      * 获取所有子节点
      *
      * @param containUnlimited 是否包含不限节点
