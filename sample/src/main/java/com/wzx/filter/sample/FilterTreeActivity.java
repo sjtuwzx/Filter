@@ -28,9 +28,22 @@ public class FilterTreeActivity extends AppCompatActivity implements FilterTreeV
         mFilterTreeView.setLazyLoader(mLazyLoader);
         mFilterTreeView.setOnItemClickListener(this);
         TestFilterRoot root = new TestFilterRoot();
+        //添加预选中节点
+        addSelectedNode(root, "lazy[0]");
+        addSelectedNode(root, "lazy[1]");
+        addSelectedNode(root, "lazy[2]");
+
         bindViewConfig(root);
 
         mFilterTreeView.setFilterGroup(root);
+    }
+
+    private void addSelectedNode(FilterGroup group, String data) {
+        FilterNode node = new FilterNode();
+        node.setDisplayName(data);
+        node.setCharacterCode(data);
+
+        group.addSelectNode(node);
     }
 
     private FilterTreeView.LazyLoader mLazyLoader = new FilterTreeView.LazyLoader() {

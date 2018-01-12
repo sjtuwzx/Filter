@@ -70,4 +70,17 @@ public class TestFilterRoot extends FilterRoot {
         addNode(new LazyOpenFilterGroup());
         resetFilterTree(true);
     }
+
+    @Override
+    public synchronized void addSelectNode(FilterNode node) {
+        if (node.getCharacterCode().startsWith("lazy")) {
+            for (int i = 0; i < mChildren.size(); i++) {
+                if (mChildren.get(i) instanceof  LazyOpenFilterGroup) {
+                    ((FilterGroup) mChildren.get(i)).addSelectNode(node);
+                }
+            }
+        } else {
+            super.addSelectNode(node);
+        }
+    }
 }
