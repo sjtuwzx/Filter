@@ -5,9 +5,11 @@ import com.wzx.filter.FilterNode;
 
 public class LazyOpenFilterGroup extends FilterGroup {
 
-    public LazyOpenFilterGroup() {
-        setDisplayName("lazy open");
-        setCharacterCode("lazy");
+    private int mIndex;
+
+    public LazyOpenFilterGroup(int index) {
+        mIndex = index;
+        setDisplayName(String.format("lazy open[%d]", index + 1));
     }
 
     @Override
@@ -27,8 +29,8 @@ public class LazyOpenFilterGroup extends FilterGroup {
         }
         for (int i = 0; i < 10; i++) {
             FilterNode node = new FilterNode();
-            node.setDisplayName(String.format("lazy[%d]", i + 1));
-            node.setCharacterCode(String.format("lazy[%d]", i + 1));
+            node.setDisplayName(String.format("lazy[%d-%d]", mIndex + 1, i + 1));
+            node.setCharacterCode(String.format("lazy[%d-%d]", mIndex + 1, i + 1));
             addNode(node);
         }
         return true;

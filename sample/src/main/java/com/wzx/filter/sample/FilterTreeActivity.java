@@ -29,19 +29,23 @@ public class FilterTreeActivity extends AppCompatActivity implements FilterTreeV
         mFilterTreeView.setOnItemClickListener(this);
         TestFilterRoot root = new TestFilterRoot();
         //添加预选中节点
-        addSelectedNode(root, "lazy[0]");
-        addSelectedNode(root, "lazy[1]");
-        addSelectedNode(root, "lazy[2]");
+        addSelectedNode(root, "lazy[1-1]", "lazy[1]");
+        addSelectedNode(root, "lazy[2-1]", "lazy[2]");
+        addSelectedNode(root, "lazy[2-2]", "lazy[2]");
+        addSelectedNode(root, "lazy[3-1]", "lazy[3]");
+        addSelectedNode(root, "lazy[3-2]", "lazy[3]");
+        addSelectedNode(root, "lazy[3-3]", "lazy[3]");
 
         bindViewConfig(root);
 
         mFilterTreeView.setFilterGroup(root);
     }
 
-    private void addSelectedNode(FilterGroup group, String data) {
+    private void addSelectedNode(FilterGroup group, String data, String type) {
         FilterNode node = new FilterNode();
         node.setDisplayName(data);
         node.setCharacterCode(data);
+        node.setData(type);
 
         group.addSelectNode(node);
     }

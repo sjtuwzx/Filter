@@ -62,25 +62,20 @@ public class TestFilterRoot extends FilterRoot {
             }
             addNode(group);
         }
-        addNode(new LazyOpenFilterGroup());
-        addNode(new LazyOpenFilterGroup());
-        addNode(new LazyOpenFilterGroup());
-        addNode(new LazyOpenFilterGroup());
-        addNode(new LazyOpenFilterGroup());
-        addNode(new LazyOpenFilterGroup());
+        for (int i = 0; i < 6; i++) {
+            FilterGroup group = new LazyOpenFilterGroup(i);
+            group.setType(String.format("lazy[%d]", i + 1));
+            addNode(group);
+        }
         resetFilterTree(true);
     }
 
     @Override
     public synchronized void addSelectNode(FilterNode node) {
-        if (node.getCharacterCode().startsWith("lazy")) {
-            for (int i = 0; i < mChildren.size(); i++) {
-                if (mChildren.get(i) instanceof  LazyOpenFilterGroup) {
-                    ((FilterGroup) mChildren.get(i)).addSelectNode(node);
-                }
-            }
-        } else {
-            super.addSelectNode(node);
+        String type = node.getData();
+        FilterGroup group = getChild(type);
+        if (group != null) {
+            group.addSelectNode(node);
         }
     }
 }
