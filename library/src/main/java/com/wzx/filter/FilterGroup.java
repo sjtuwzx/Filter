@@ -44,7 +44,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
     @Override
     public synchronized void remove(FilterNode node) {
         if (mChildren.remove(node)) {
-                node.setParent(null);
+            node.setParent(null);
         }
     }
 
@@ -112,6 +112,9 @@ public class FilterGroup extends FilterNode implements FilterParent {
         addNode(node);
     }
 
+    /**
+     * 建议筛选结束后调用
+     */
     public synchronized void removeUnselectedInvisibleNode() {
         int childrenCount = mChildren.size();
         for (int i = childrenCount - 1; i >= 0; i--) {
@@ -126,7 +129,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
     }
 
     @Override
-    public synchronized boolean forceSelect(boolean selected) {
+    protected synchronized boolean forceSelect(boolean selected) {
         if (mIsSelected && !selected) {
             for (FilterNode child : mChildren) {
                 if (child instanceof UnlimitedFilterNode) {
@@ -150,6 +153,16 @@ public class FilterGroup extends FilterNode implements FilterParent {
         }
         return super.setSelected(selected);
 
+    }
+
+    @Override
+    public void requestSelect(boolean selected) {
+        if (!selected) {
+            List<FilterNode> selectedLeafNodes = getSelectedLeafNodes();
+            for (FilterNode node : selectedLeafNodes) {
+                node.requestSelect(false);
+            }
+        }
     }
 
     private synchronized List<FilterNode> getTriggerFirstChildren(FilterNode trigger) {
@@ -228,7 +241,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
                         FilterNode node = selectedChildrenList.get(0);
                         //TODO 单选节点下子节点不支持数据关联
                         if (node instanceof FilterGroup) {
-                            FilterGroup group = (FilterGroup)node;
+                            FilterGroup group = (FilterGroup) node;
                             List<FilterNode> selectLeafNodes = group.getSelectedLeafNodes();
                             for (FilterNode selectNode : selectLeafNodes) {
                                 selectNode.requestSelect(false);
@@ -284,6 +297,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
 
     /**
      * 查找“全部”节点
+     *
      * @return “全部”节点 or null
      */
     private synchronized FilterNode findAllNode() {
@@ -322,6 +336,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
 
     /**
      * 获取第一个选择的child position
+     *
      * @param containUnlimited 是否包含不限节点
      * @return 第一个选择的child position
      */
@@ -357,16 +372,16 @@ public class FilterGroup extends FilterNode implements FilterParent {
         }
 
         //去除重复节点，从头开始遍历，保证前位节点优先级最高
-        Set<String> selectedCharacterCodes = new HashSet<String>();
+        Set<String> selectedIDs = new HashSet<String>();
         for (int i = 0; i < selectLeafNodeList.size(); i++) {
             FilterNode node = selectLeafNodeList.get(i);
-            String characterCode = node.getCharacterCode();
-            if (!TextUtils.isEmpty(characterCode)) {
-                if (selectedCharacterCodes.contains(characterCode)) {
+            String id = node.getID();
+            if (!TextUtils.isEmpty(id)) {
+                if (selectedIDs.contains(id)) {
                     selectLeafNodeList.remove(i);
                     --i;
                 } else {
-                    selectedCharacterCodes.add(characterCode);
+                    selectedIDs.add(id);
                 }
             }
         }
@@ -376,7 +391,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
     protected synchronized void resetFilterGroup() {
         for (FilterNode child : mChildren) {
             if (child instanceof FilterGroup) {
-                FilterGroup group = (FilterGroup)child;
+                FilterGroup group = (FilterGroup) child;
                 group.resetFilterGroup();
             } else if (child instanceof UnlimitedFilterNode) {
                 child.setSelected(true);
@@ -406,6 +421,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
 
     /**
      * 使用selectLeafNodes恢复先前筛选状态
+     *
      * @param selectLeafNodes 选中叶子节点列表
      */
     private synchronized void restore(List<FilterNode> selectLeafNodes) {
@@ -434,32 +450,32 @@ public class FilterGroup extends FilterNode implements FilterParent {
         if (mHistorySelectList == null) {
             return true;
         }
-        Set<String> selectLeafCharacterCodes = new HashSet<String>();
+        Set<String> selectLeafIDs = new HashSet<String>();
         Set<FilterNode> selectUnknownLeafNodes = new HashSet<FilterNode>();
         for (FilterNode node : mHistorySelectList) {
-            String characterCode = node.getCharacterCode();
-            if (!TextUtils.isEmpty(characterCode)) {
-                selectLeafCharacterCodes.add(characterCode);
+            String id = node.getID();
+            if (!TextUtils.isEmpty(id)) {
+                selectLeafIDs.add(id);
             } else {
                 selectUnknownLeafNodes.add(node);
             }
         }
         List<FilterNode> selectLeafNodeList = getSelectedLeafNodes();
         for (FilterNode node : selectLeafNodeList) {
-            String characterCode = node.getCharacterCode();
-            if (!TextUtils.isEmpty(characterCode)) {
-                if (!selectLeafCharacterCodes.remove(characterCode)) {
+            String id = node.getID();
+            if (!TextUtils.isEmpty(id)) {
+                if (!selectLeafIDs.remove(id)) {
                     return true;
                 }
             } else if (!selectUnknownLeafNodes.remove(node)) {
                 return true;
             }
         }
-        return !selectLeafCharacterCodes.isEmpty() || !selectUnknownLeafNodes.isEmpty();
+        return !selectLeafIDs.isEmpty() || !selectUnknownLeafNodes.isEmpty();
     }
 
     /**
-     * 根据characterCode判断是否包含指定节点
+     * 根据节点id判断是否包含指定节点
      *
      * @param node 指定节点
      * @return 是否包含指定节点
@@ -469,7 +485,7 @@ public class FilterGroup extends FilterNode implements FilterParent {
     }
 
     /**
-     * 根据characterCode或引用（==）判断是否包含指定节点
+     * 根据节点id或引用（==）判断是否包含指定节点
      *
      * @param node               指定节点(仅支持叶子节点)
      * @param accordingReference 是否使用引用（==）判断
@@ -477,8 +493,8 @@ public class FilterGroup extends FilterNode implements FilterParent {
      */
     @Override
     public synchronized boolean contain(FilterNode node, boolean accordingReference) {
-        String characterCode = node.getCharacterCode();
-        if (!accordingReference && TextUtils.isEmpty(characterCode)) {
+        String id = node.getID();
+        if (!accordingReference && TextUtils.isEmpty(id)) {
             return false;
         }
         for (FilterNode child : mChildren) {
@@ -493,8 +509,8 @@ public class FilterGroup extends FilterNode implements FilterParent {
 
     @Override
     public synchronized FilterNode findNode(FilterNode node, boolean accordingReference) {
-        String characterCode = node.getCharacterCode();
-        if (!accordingReference && TextUtils.isEmpty(characterCode)) {
+        String id = node.getID();
+        if (!accordingReference && TextUtils.isEmpty(id)) {
             return null;
         }
         for (FilterNode child : mChildren) {

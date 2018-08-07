@@ -30,7 +30,7 @@ public class LazyOpenFilterGroup extends FilterGroup {
         for (int i = 0; i < 10; i++) {
             FilterNode node = new FilterNode();
             node.setDisplayName(String.format("lazy[%d-%d]", mIndex + 1, i + 1));
-            node.setCharacterCode(String.format("lazy[%d-%d]", mIndex + 1, i + 1));
+            node.setID(String.format("lazy[%d-%d]", mIndex + 1, i + 1));
             addNode(node);
         }
         return true;

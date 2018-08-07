@@ -44,7 +44,7 @@ public class FilterTreeActivity extends AppCompatActivity implements FilterTreeV
     private void addSelectedNode(FilterGroup group, String data, String type) {
         FilterNode node = new FilterNode();
         node.setDisplayName(data);
-        node.setCharacterCode(data);
+        node.setID(data);
         node.setData(type);
 
         group.addSelectNode(node);

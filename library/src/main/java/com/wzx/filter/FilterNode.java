@@ -13,9 +13,10 @@ public class FilterNode {
 
     //展示名称
     private String mDisplayName;
+    private String mSubInfo;
 
-    //特征code，用于数据关联
-    private String mCharacterCode = "";
+    //节点id，用于数据关联
+    private String mID = "";
 
     private Set<String> mMutexCodes = new HashSet<String>();
 
@@ -28,6 +29,7 @@ public class FilterNode {
 
     /**
      * 设置展示名称
+     *
      * @param displayName 展示名称
      */
     public final void setDisplayName(String displayName) {
@@ -36,30 +38,42 @@ public class FilterNode {
 
     /**
      * 获取展示名称
+     *
      * @return 展示名称
      */
     public final String getDisplayName() {
         return mDisplayName;
     }
 
-    /**
-     * 设置特征code，用于节点选中及关联
-     * @param characterCode 特征code
-     */
-    public final void setCharacterCode(String characterCode) {
-        mCharacterCode = characterCode;
+    public void setSubInfo(String info) {
+        mSubInfo = info;
+    }
+
+    public String getSubInfo() {
+        return mSubInfo;
     }
 
     /**
-     * 获取特征code
-     * @return 特征code
+     * 设置节点id，用于节点选中及关联
+     *id
+     * @param id 节点id
      */
-    public final String getCharacterCode() {
-        return mCharacterCode;
+    public final void setID(String id) {
+        mID = id;
+    }
+
+    /**
+     * 获取节点id
+     *
+     * @return 节点id
+     */
+    public final String getID() {
+        return mID;
     }
 
     /**
      * 设置节点关联的数据
+     *
      * @param data 与节点关联的数据
      */
     public void setData(Object data) {
@@ -68,14 +82,16 @@ public class FilterNode {
 
     /**
      * 获取节点关联的数据
+     *
      * @return 与节点关联的数据
      */
     public <T> T getData() {
-        return (T)mData;
+        return (T) mData;
     }
 
     /**
      * 设置与节点关联的tag
+     *
      * @param tag 与节点关联的tag
      */
     public void setTag(Object tag) {
@@ -84,14 +100,16 @@ public class FilterNode {
 
     /**
      * 获取与节点关联的tag
+     *
      * @return 与节点关联的tag
      */
     public <T> T getTag() {
-        return (T)mTag;
+        return (T) mTag;
     }
 
     /**
      * 设置节点的parent
+     *
      * @param parent 节点的父节点
      */
     public final void setParent(FilterParent parent) {
@@ -100,6 +118,7 @@ public class FilterNode {
 
     /**
      * 获取节点的parent
+     *
      * @return 节点的父节点
      */
     public final FilterParent getParent() {
@@ -108,6 +127,7 @@ public class FilterNode {
 
     /**
      * 是否叶子节点
+     *
      * @return 是否叶子节点
      */
     public boolean isLeaf() {
@@ -116,6 +136,7 @@ public class FilterNode {
 
     /**
      * 请求root刷新整个筛选树状态
+     *
      * @param selected 是否选中
      */
     public void requestSelect(boolean selected) {
@@ -126,15 +147,17 @@ public class FilterNode {
 
     /**
      * 刷新该节点及其下层节点状态
+     *
      * @param selected 是否选中
      * @return 是否新选中
      */
-    public boolean forceSelect(boolean selected) {
+    protected boolean forceSelect(boolean selected) {
         return setSelected(selected);
     }
 
     /**
      * 刷新该节点状态
+     *
      * @param selected 是否选中
      * @return 是否新选中
      */
@@ -151,6 +174,7 @@ public class FilterNode {
 
     /**
      * 是否选中
+     *
      * @return 是否选中
      */
     public boolean isSelected() {
@@ -159,7 +183,8 @@ public class FilterNode {
 
     /**
      * 根据触发节点刷新该节点及下层节点状态
-     * @param trigger 触发刷新节点
+     *
+     * @param trigger  触发刷新节点
      * @param selected 是否选中
      * @return 是否新选中
      */
@@ -174,6 +199,7 @@ public class FilterNode {
 
     /**
      * 添加互斥code，用于节点间互斥
+     *
      * @param mutexCode 互斥code
      */
     public void addMutexCode(String mutexCode) {
@@ -181,16 +207,16 @@ public class FilterNode {
     }
 
     private boolean isExclusive(FilterNode node) {
-        return !TextUtils.isEmpty(node.mCharacterCode) && mMutexCodes.contains(node.mCharacterCode);
+        return !TextUtils.isEmpty(node.mID) && mMutexCodes.contains(node.mID);
     }
 
     public boolean isEquals(Object o) {
-        if (o instanceof  FilterNode) {
-            FilterNode right = (FilterNode)o;
-            if (TextUtils.isEmpty(mCharacterCode) || TextUtils.isEmpty(right.mCharacterCode)) {
+        if (o instanceof FilterNode) {
+            FilterNode right = (FilterNode) o;
+            if (TextUtils.isEmpty(mID) || TextUtils.isEmpty(right.mID)) {
                 return this == right;
             }
-            return mCharacterCode.equals(right.mCharacterCode);
+            return mID.equals(right.mID);
         }
         return false;
     }
@@ -210,6 +236,7 @@ public class FilterNode {
 
     /**
      * 设置节点选中状态变化监听器
+     *
      * @param listener
      */
     public void setOnSelectChangeListener(OnSelectChangeListener listener) {
@@ -219,7 +246,8 @@ public class FilterNode {
     public interface OnSelectChangeListener {
         /**
          * 回调当节点选中状态变化时
-         * @param node 被监听节点
+         *
+         * @param node     被监听节点
          * @param selected 是否选中
          */
         void onSelectChange(FilterNode node, boolean selected);

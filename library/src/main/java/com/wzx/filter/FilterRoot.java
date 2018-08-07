@@ -17,7 +17,7 @@ public class FilterRoot extends FilterGroup {
     public synchronized void addNode(FilterNode node) {
         super.addNode(node);
         if (node instanceof FilterGroup) {
-            FilterGroup group = (FilterGroup)node;
+            FilterGroup group = (FilterGroup) node;
             String type = group.getType();
             if (!TextUtils.isEmpty(type)) {
                 mChildrenMap.put(type, node);
@@ -27,11 +27,12 @@ public class FilterRoot extends FilterGroup {
 
     /**
      * 根据type获取节点
+     *
      * @param type 节点类型
      * @return 符合type的节点 or null
      */
     public synchronized <T extends FilterNode> T getChild(String type) {
-        return (T)mChildrenMap.get(type);
+        return (T) mChildrenMap.get(type);
     }
 
     @Override
@@ -58,7 +59,7 @@ public class FilterRoot extends FilterGroup {
     @Override
     public synchronized void save() {
         for (FilterNode child : mChildren) {
-            FilterGroup group = (FilterGroup)child;
+            FilterGroup group = (FilterGroup) child;
             group.save();
         }
     }
@@ -69,7 +70,7 @@ public class FilterRoot extends FilterGroup {
     @Override
     public synchronized void restore() {
         for (FilterNode child : mChildren) {
-            FilterGroup group = (FilterGroup)child;
+            FilterGroup group = (FilterGroup) child;
             group.restore();
         }
     }
@@ -80,23 +81,20 @@ public class FilterRoot extends FilterGroup {
     @Override
     public synchronized void discardHistory() {
         for (FilterNode child : mChildren) {
-            FilterGroup group = (FilterGroup)child;
+            FilterGroup group = (FilterGroup) child;
             group.discardHistory();
         }
     }
 
-    public synchronized void submit() {
-        removeUnselectedInvisibleNode();
-    }
-
     /**
      * 是否当前筛选状态与上次save时状态发生改变
+     *
      * @return 是否改变
      */
     @Override
     public synchronized boolean hasFilterChanged() {
         for (FilterNode child : mChildren) {
-            FilterGroup group = (FilterGroup)child;
+            FilterGroup group = (FilterGroup) child;
             if (group.hasFilterChanged()) {
                 return true;
             }
@@ -104,34 +102,17 @@ public class FilterRoot extends FilterGroup {
         return false;
     }
 
-    private Object mOpenLock = new Object();
-
     @Override
-    public boolean open(FilterGroupOpenListener listener) {
-        synchronized (mOpenLock) {
-            if (listener != null) {
-                listener.onOpenStart(this);
-            }
-            if (!mHasOpened) {
-                boolean hasOpened = true;
-                for (FilterNode child : mChildren) {
-                    if (child instanceof FilterGroup) {
-                        FilterGroup group = (FilterGroup) child;
-                        if (group.canOpen() && !group.hasOpened()) {
-                            hasOpened &= group.open(listener);
-                        }
-                    }
-                }
-                mHasOpened = hasOpened;
-            }
-            if (listener != null) {
-                if (mHasOpened) {
-                    listener.onOpenSuccess(this);
-                } else {
-                    listener.onOpenFail(this, "");
+    protected boolean performOpen(FilterGroupOpenListener listener) {
+        boolean hasOpened = true;
+        for (FilterNode child : mChildren) {
+            if (child instanceof FilterGroup) {
+                FilterGroup group = (FilterGroup) child;
+                if (group.canOpen() && !group.hasOpened()) {
+                    hasOpened &= group.open(listener);
                 }
             }
-            return mHasOpened;
         }
+        return hasOpened;
     }
 }

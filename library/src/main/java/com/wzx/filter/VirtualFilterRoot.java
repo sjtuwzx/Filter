@@ -17,7 +17,7 @@ public class VirtualFilterRoot extends FilterRoot {
     @Override
     public void addNode(FilterNode node) {
         mChildren.add(node);
-        String type = ((FilterGroup)node).getType();
+        String type = ((FilterGroup) node).getType();
         if (!TextUtils.isEmpty(type)) {
             mChildrenMap.put(type, node);
         }
@@ -25,7 +25,7 @@ public class VirtualFilterRoot extends FilterRoot {
 
     @Override
     public <T extends FilterNode> T getChild(String type) {
-        return (T)mChildrenMap.get(type);
+        return (T) mChildrenMap.get(type);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class VirtualFilterRoot extends FilterRoot {
         for (int i = childrenCount - 1; i >= 0; i--) {
             FilterNode child = children.get(i);
             if (child instanceof FilterGroup) {
-                FilterGroup group = (FilterGroup)child;
+                FilterGroup group = (FilterGroup) child;
                 if (!needEmptyGroup && group.isEmpty(false)) {
                     children.remove(i);
                 }

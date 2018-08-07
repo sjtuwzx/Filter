@@ -8,7 +8,8 @@ public class InvisibleFilterNode extends FilterNode {
 
     public InvisibleFilterNode(FilterNode node) {
         setDisplayName(node.getDisplayName());
-        setCharacterCode(node.getCharacterCode());
+        setSubInfo(node.getSubInfo());
+        setID(node.getID());
         setData(node.getData());
     }
 
